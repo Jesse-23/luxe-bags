@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Profile } from "@/types/database";
+import { Profile, ProfilePrivate } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,30 +16,50 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<Partial<Profile>>({});
+  const [privateProfile, setPrivateProfile] = useState<Partial<ProfilePrivate>>({});
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!user) return;
 
-      const { data, error } = await supabase
+      // Fetch public profile
+      const { data: publicData, error: publicError } = await supabase
         .from("profiles")
         .select("*")
         .eq("user_id", user.id)
         .single();
 
-      if (error) {
-        console.error("Error fetching profile:", error);
+      if (publicError) {
+        console.error("Error fetching profile:", publicError);
       } else {
-        setProfile(data);
+        setProfile(publicData);
       }
+
+      // Fetch private profile
+      const { data: privateData, error: privateError } = await supabase
+        .from("profile_private")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (privateError) {
+        console.error("Error fetching private profile:", privateError);
+      } else {
+        setPrivateProfile(privateData);
+      }
+
       setLoading(false);
     };
 
     fetchProfile();
   }, [user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePublicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handlePrivateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrivateProfile({ ...privateProfile, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,24 +68,42 @@ const Account = () => {
 
     setSaving(true);
 
-    const { error } = await supabase
+    // Update public profile
+    const { error: publicError } = await supabase
       .from("profiles")
       .update({
         full_name: profile.full_name,
-        phone: profile.phone,
-        address_line1: profile.address_line1,
-        address_line2: profile.address_line2,
-        city: profile.city,
-        state: profile.state,
-        postal_code: profile.postal_code,
-        country: profile.country,
       })
       .eq("user_id", user.id);
 
-    if (error) {
+    if (publicError) {
       toast({
         title: "Error",
         description: "Failed to update profile",
+        variant: "destructive",
+      });
+      setSaving(false);
+      return;
+    }
+
+    // Update private profile
+    const { error: privateError } = await supabase
+      .from("profile_private")
+      .update({
+        phone: privateProfile.phone,
+        address_line1: privateProfile.address_line1,
+        address_line2: privateProfile.address_line2,
+        city: privateProfile.city,
+        state: privateProfile.state,
+        postal_code: privateProfile.postal_code,
+        country: privateProfile.country,
+      })
+      .eq("user_id", user.id);
+
+    if (privateError) {
+      toast({
+        title: "Error",
+        description: "Failed to update contact information",
         variant: "destructive",
       });
     } else {
@@ -132,7 +170,7 @@ const Account = () => {
                 id="full_name"
                 name="full_name"
                 value={profile.full_name || ""}
-                onChange={handleChange}
+                onChange={handlePublicChange}
               />
             </div>
 
@@ -142,8 +180,8 @@ const Account = () => {
                 id="phone"
                 name="phone"
                 type="tel"
-                value={profile.phone || ""}
-                onChange={handleChange}
+                value={privateProfile.phone || ""}
+                onChange={handlePrivateChange}
               />
             </div>
 
@@ -152,8 +190,8 @@ const Account = () => {
               <Input
                 id="address_line1"
                 name="address_line1"
-                value={profile.address_line1 || ""}
-                onChange={handleChange}
+                value={privateProfile.address_line1 || ""}
+                onChange={handlePrivateChange}
               />
             </div>
 
@@ -162,8 +200,8 @@ const Account = () => {
               <Input
                 id="address_line2"
                 name="address_line2"
-                value={profile.address_line2 || ""}
-                onChange={handleChange}
+                value={privateProfile.address_line2 || ""}
+                onChange={handlePrivateChange}
               />
             </div>
 
@@ -173,8 +211,8 @@ const Account = () => {
                 <Input
                   id="city"
                   name="city"
-                  value={profile.city || ""}
-                  onChange={handleChange}
+                  value={privateProfile.city || ""}
+                  onChange={handlePrivateChange}
                 />
               </div>
               <div className="space-y-2">
@@ -182,8 +220,8 @@ const Account = () => {
                 <Input
                   id="state"
                   name="state"
-                  value={profile.state || ""}
-                  onChange={handleChange}
+                  value={privateProfile.state || ""}
+                  onChange={handlePrivateChange}
                 />
               </div>
             </div>
@@ -194,8 +232,8 @@ const Account = () => {
                 <Input
                   id="postal_code"
                   name="postal_code"
-                  value={profile.postal_code || ""}
-                  onChange={handleChange}
+                  value={privateProfile.postal_code || ""}
+                  onChange={handlePrivateChange}
                 />
               </div>
               <div className="space-y-2">
@@ -203,8 +241,8 @@ const Account = () => {
                 <Input
                   id="country"
                   name="country"
-                  value={profile.country || ""}
-                  onChange={handleChange}
+                  value={privateProfile.country || ""}
+                  onChange={handlePrivateChange}
                 />
               </div>
             </div>
