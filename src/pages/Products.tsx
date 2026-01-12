@@ -5,6 +5,8 @@ import { Layout } from "@/components/layout/Layout";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { Product, Category } from "@/types/database";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -28,6 +30,7 @@ const Products = () => {
   const [sortBy, setSortBy] = useState("newest");
 
   const categorySlug = searchParams.get("category");
+  const searchQuery = searchParams.get("search") || "";
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -51,6 +54,11 @@ const Products = () => {
         if (category) {
           query = query.eq("category_id", category.id);
         }
+      }
+
+      // Search by name or description
+      if (searchQuery) {
+        query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
       }
 
       // Sort
@@ -79,14 +87,32 @@ const Products = () => {
     };
 
     fetchProducts();
-  }, [categorySlug, sortBy, categories]);
+  }, [categorySlug, sortBy, categories, searchQuery]);
 
   const handleCategoryChange = (slug: string | null) => {
+    const newParams = new URLSearchParams(searchParams);
     if (slug) {
-      setSearchParams({ category: slug });
+      newParams.set("category", slug);
     } else {
-      setSearchParams({});
+      newParams.delete("category");
     }
+    setSearchParams(newParams);
+  };
+
+  const clearSearch = () => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete("search");
+    setSearchParams(newParams);
+  };
+
+  const getPageTitle = () => {
+    if (searchQuery) {
+      return `Search: "${searchQuery}"`;
+    }
+    if (categorySlug) {
+      return categories.find((c) => c.slug === categorySlug)?.name || "Products";
+    }
+    return "All Bags";
   };
 
   return (
@@ -95,20 +121,36 @@ const Products = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="font-display text-4xl md:text-5xl font-medium mb-2">
-            {categorySlug
-              ? categories.find((c) => c.slug === categorySlug)?.name || "Products"
-              : "All Bags"}
+            {getPageTitle()}
           </h1>
           <p className="text-muted-foreground">
-            Discover our collection of handcrafted luxury bags
+            {searchQuery
+              ? `Found ${products.length} result${products.length !== 1 ? "s" : ""}`
+              : "Discover our collection of handcrafted luxury bags"}
           </p>
         </div>
+
+        {/* Active Search Badge */}
+        {searchQuery && (
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary rounded-full">
+              <Search className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm">{searchQuery}</span>
+              <button
+                onClick={clearSearch}
+                className="p-0.5 hover:bg-muted rounded-full transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
           <div className="flex flex-wrap gap-2">
             <Button
-              variant={categorySlug === null ? "default" : "outline"}
+              variant={categorySlug === null && !searchQuery ? "default" : "outline"}
               size="sm"
               onClick={() => handleCategoryChange(null)}
             >
