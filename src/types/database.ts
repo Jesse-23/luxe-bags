@@ -28,7 +28,13 @@ export interface Profile {
   id: string;
   user_id: string;
   full_name: string | null;
-  email: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProfilePrivate {
+  id: string;
+  user_id: string;
   phone: string | null;
   address_line1: string | null;
   address_line2: string | null;
