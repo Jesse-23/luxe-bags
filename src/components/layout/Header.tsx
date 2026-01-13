@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, User, Menu, X, Search } from "lucide-react";
+import { ShoppingBag, User, Menu, X, Search, Settings } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useAdmin } from "@/hooks/useAdmin";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +35,7 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, signOut } = useAuth();
   const { totalItems } = useCart();
+  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -121,6 +123,17 @@ export function Header() {
                 <DropdownMenuItem asChild>
                   <Link to="/orders">My Orders</Link>
                 </DropdownMenuItem>
+                {isAdmin && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="flex items-center gap-2">
+                        <Settings className="h-4 w-4" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
                   Sign Out
