@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Upload, X, Image as ImageIcon } from "lucide-react";
 import { Category } from "@/types/database";
 
 interface ProductFormData {
@@ -81,6 +81,9 @@ export function ProductManagement() {
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -127,9 +130,60 @@ export function ProductManagement() {
     }));
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    const newImageUrls: string[] = [];
+
+    for (const file of Array.from(files)) {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `products/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("product-images")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        toast({
+          title: "Upload failed",
+          description: uploadError.message,
+          variant: "destructive",
+        });
+        continue;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+      newImageUrls.push(urlData.publicUrl);
+    }
+
+    setUploadedImages((prev) => [...prev, ...newImageUrls]);
+    setUploading(false);
+    
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const removeUploadedImage = (url: string) => {
+    setUploadedImages((prev) => prev.filter((img) => img !== url));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+
+    // Combine uploaded images with manually entered URLs
+    const manualImages = formData.images
+      ? formData.images.split(",").map((url) => url.trim()).filter(Boolean)
+      : [];
+    const allImages = [...uploadedImages, ...manualImages];
 
     const productData = {
       name: formData.name.trim(),
@@ -141,9 +195,7 @@ export function ProductManagement() {
         : null,
       category_id: formData.category_id || null,
       stock_quantity: parseInt(formData.stock_quantity) || 0,
-      images: formData.images
-        ? formData.images.split(",").map((url) => url.trim())
-        : [],
+      images: allImages,
       is_featured: formData.is_featured,
       is_active: formData.is_active,
     };
@@ -180,6 +232,7 @@ export function ProductManagement() {
       setDialogOpen(false);
       setFormData(initialFormData);
       setEditingId(null);
+      setUploadedImages([]);
       fetchProducts();
     }
 
@@ -195,10 +248,11 @@ export function ProductManagement() {
       compare_at_price: product.compare_at_price?.toString() || "",
       category_id: product.category_id || "",
       stock_quantity: product.stock_quantity.toString(),
-      images: product.images?.join(", ") || "",
+      images: "",
       is_featured: product.is_featured || false,
       is_active: product.is_active !== false,
     });
+    setUploadedImages(product.images || []);
     setEditingId(product.id);
     setDialogOpen(true);
   };
@@ -227,6 +281,7 @@ export function ProductManagement() {
     setDialogOpen(false);
     setFormData(initialFormData);
     setEditingId(null);
+    setUploadedImages([]);
   };
 
   return (
@@ -361,17 +416,72 @@ export function ProductManagement() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="images">Image URLs (comma-separated)</Label>
-                <Textarea
-                  id="images"
-                  value={formData.images}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, images: e.target.value }))
-                  }
-                  placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                  rows={2}
-                />
+              <div className="space-y-3">
+                <Label>Product Images</Label>
+                
+                {/* Uploaded Images Preview */}
+                {uploadedImages.length > 0 && (
+                  <div className="grid grid-cols-4 gap-2">
+                    {uploadedImages.map((url, index) => (
+                      <div key={index} className="relative group aspect-square">
+                        <img
+                          src={url}
+                          alt={`Product ${index + 1}`}
+                          className="w-full h-full object-cover rounded-md border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeUploadedImage(url)}
+                          className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upload Button */}
+                <div className="flex gap-2">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full"
+                  >
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Upload className="h-4 w-4 mr-2" />
+                    )}
+                    {uploading ? "Uploading..." : "Upload Images"}
+                  </Button>
+                </div>
+
+                {/* Manual URL Input */}
+                <div className="space-y-1">
+                  <Label htmlFor="images" className="text-xs text-muted-foreground">
+                    Or add image URLs manually (comma-separated)
+                  </Label>
+                  <Textarea
+                    id="images"
+                    value={formData.images}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, images: e.target.value }))
+                    }
+                    placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
+                    rows={2}
+                  />
+                </div>
               </div>
 
               <div className="flex items-center gap-6">
