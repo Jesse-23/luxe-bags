@@ -55,25 +55,25 @@ const Admin = () => {
 
   return (
     <Layout>
-      <div className="container py-8 md:py-12">
-        <div className="mb-8">
-          <h1 className="font-display text-4xl font-medium mb-2">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8 md:py-12">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium mb-2">
             Admin Panel
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Manage your store, products, and view analytics
           </p>
         </div>
 
-        <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
+        <Tabs defaultValue="dashboard" className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full sm:w-auto sm:max-w-md grid-cols-2">
+            <TabsTrigger value="dashboard" className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
+              <LayoutDashboard className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span>Dashboard</span>
             </TabsTrigger>
-            <TabsTrigger value="products" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Products
+            <TabsTrigger value="products" className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
+              <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <span>Products</span>
             </TabsTrigger>
           </TabsList>
 

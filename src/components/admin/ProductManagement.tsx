@@ -286,30 +286,30 @@ export function ProductManagement() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="font-display text-2xl font-medium">Products</h2>
-          <p className="text-muted-foreground text-sm">
+          <h2 className="font-display text-xl sm:text-2xl font-medium">Products</h2>
+          <p className="text-muted-foreground text-xs sm:text-sm">
             Manage your product catalog
           </p>
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setEditingId(null)}>
+            <Button onClick={() => setEditingId(null)} className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
               Add Product
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4 sm:mx-auto">
             <DialogHeader>
-              <DialogTitle className="font-display text-xl">
+              <DialogTitle className="font-display text-lg sm:text-xl">
                 {editingId ? "Edit Product" : "Add New Product"}
               </DialogTitle>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name *</Label>
                   <Input
@@ -347,7 +347,7 @@ export function ProductManagement() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="price">Price *</Label>
                   <Input
@@ -421,7 +421,7 @@ export function ProductManagement() {
                 
                 {/* Uploaded Images Preview */}
                 {uploadedImages.length > 0 && (
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {uploadedImages.map((url, index) => (
                       <div key={index} className="relative group aspect-square">
                         <img
@@ -507,15 +507,16 @@ export function ProductManagement() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleDialogClose}
+                  className="w-full sm:w-auto"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={submitting}>
+                <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
                   {submitting && (
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   )}
@@ -537,24 +538,31 @@ export function ProductManagement() {
           No products found. Add your first product to get started.
         </div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
+        <div className="border rounded-lg overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Stock</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Featured</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="min-w-[150px]">Name</TableHead>
+                <TableHead className="min-w-[80px]">Price</TableHead>
+                <TableHead className="min-w-[60px] hidden sm:table-cell">Stock</TableHead>
+                <TableHead className="min-w-[80px] hidden md:table-cell">Status</TableHead>
+                <TableHead className="min-w-[80px] hidden lg:table-cell">Featured</TableHead>
+                <TableHead className="text-right min-w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {products.map((product) => (
                 <TableRow key={product.id}>
-                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex flex-col">
+                      <span className="truncate max-w-[200px]">{product.name}</span>
+                      <span className="text-xs text-muted-foreground sm:hidden">
+                        Stock: {product.stock_quantity}
+                      </span>
+                    </div>
+                  </TableCell>
                   <TableCell>${product.price.toFixed(2)}</TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <span
                       className={
                         product.stock_quantity < 10
@@ -565,7 +573,7 @@ export function ProductManagement() {
                       {product.stock_quantity}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
                         product.is_active
@@ -576,7 +584,7 @@ export function ProductManagement() {
                       {product.is_active ? "Active" : "Inactive"}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden lg:table-cell">
                     {product.is_featured && (
                       <span className="px-2 py-1 text-xs rounded-full bg-accent text-accent-foreground">
                         Featured
@@ -584,11 +592,12 @@ export function ProductManagement() {
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-1 sm:gap-2">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleEdit(product)}
+                        className="h-8 w-8"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -596,7 +605,7 @@ export function ProductManagement() {
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDelete(product.id)}
-                        className="text-destructive hover:text-destructive"
+                        className="text-destructive hover:text-destructive h-8 w-8"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

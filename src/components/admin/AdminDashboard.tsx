@@ -232,16 +232,16 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-3 sm:p-6 sm:pb-2">
+            <CardTitle className="text-xs sm:text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-lg sm:text-2xl font-bold">
               ${stats?.totalRevenue.toFixed(2)}
             </div>
             <div className="flex items-center text-xs text-muted-foreground">
@@ -259,7 +259,7 @@ export function AdminDashboard() {
                   >
                     {Math.abs(stats.revenueChange).toFixed(1)}%
                   </span>
-                  <span className="ml-1">vs last 7 days</span>
+                  <span className="ml-1 hidden sm:inline">vs last 7 days</span>
                 </>
               )}
             </div>
@@ -267,170 +267,174 @@ export function AdminDashboard() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-3 sm:p-6 sm:pb-2">
+            <CardTitle className="text-xs sm:text-sm font-medium">Total Orders</CardTitle>
+            <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalOrders}</div>
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-lg sm:text-2xl font-bold">{stats?.totalOrders}</div>
             <p className="text-xs text-muted-foreground">
-              {stats?.ordersToday} orders today
+              {stats?.ordersToday} today
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Order Value</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-3 sm:p-6 sm:pb-2">
+            <CardTitle className="text-xs sm:text-sm font-medium">Avg Order</CardTitle>
+            <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-lg sm:text-2xl font-bold">
               ${stats?.averageOrderValue.toFixed(2)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground hidden sm:block">
               Per completed order
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Products</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-3 sm:p-6 sm:pb-2">
+            <CardTitle className="text-xs sm:text-sm font-medium">Products</CardTitle>
+            <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalProducts}</div>
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-lg sm:text-2xl font-bold">{stats?.totalProducts}</div>
             <p className="text-xs text-muted-foreground">
-              {stats?.lowStockProducts} low stock alerts
+              {stats?.lowStockProducts} low stock
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
         <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <Clock className="h-5 w-5 text-muted-foreground" />
-            <CardTitle>Pending Orders</CardTitle>
+          <CardHeader className="flex flex-row items-center gap-2 p-3 sm:p-6">
+            <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+            <CardTitle className="text-sm sm:text-base">Pending Orders</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-yellow-600">
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-2xl sm:text-4xl font-bold text-yellow-600">
               {stats?.pendingOrders}
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Orders awaiting processing
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              Awaiting processing
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center gap-2">
-            <Package className="h-5 w-5 text-muted-foreground" />
-            <CardTitle>Low Stock Alerts</CardTitle>
+          <CardHeader className="flex flex-row items-center gap-2 p-3 sm:p-6">
+            <Package className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+            <CardTitle className="text-sm sm:text-base">Low Stock Alerts</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-orange-600">
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-2xl sm:text-4xl font-bold text-orange-600">
               {stats?.lowStockProducts}
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              Products with less than 10 units
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              Less than 10 units
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2">
         {/* Recent Orders */}
         <Card>
-          <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
+          <CardHeader className="p-3 sm:p-6">
+            <CardTitle className="text-sm sm:text-base">Recent Orders</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
             {recentOrders.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">
+              <p className="text-muted-foreground text-center py-4 text-sm">
                 No orders yet
               </p>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Items</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentOrders.slice(0, 5).map((order) => (
-                    <TableRow key={order.id}>
-                      <TableCell className="font-medium">
-                        <div className="text-sm">
-                          #{order.id.slice(0, 8)}...
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {format(new Date(order.created_at), "MMM d, h:mm a")}
-                        </div>
-                      </TableCell>
-                      <TableCell>{order.items_count}</TableCell>
-                      <TableCell>${order.total_amount.toFixed(2)}</TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={statusColors[order.status] || ""}
-                        >
-                          {order.status}
-                        </Badge>
-                      </TableCell>
+              <div className="overflow-x-auto -mx-3 sm:mx-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-xs sm:text-sm">Order</TableHead>
+                      <TableHead className="text-xs sm:text-sm hidden sm:table-cell">Items</TableHead>
+                      <TableHead className="text-xs sm:text-sm">Amount</TableHead>
+                      <TableHead className="text-xs sm:text-sm">Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {recentOrders.slice(0, 5).map((order) => (
+                      <TableRow key={order.id}>
+                        <TableCell className="font-medium p-2 sm:p-4">
+                          <div className="text-xs sm:text-sm">
+                            #{order.id.slice(0, 8)}...
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {format(new Date(order.created_at), "MMM d")}
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 sm:p-4 hidden sm:table-cell">{order.items_count}</TableCell>
+                        <TableCell className="p-2 sm:p-4 text-xs sm:text-sm">${order.total_amount.toFixed(2)}</TableCell>
+                        <TableCell className="p-2 sm:p-4">
+                          <Badge
+                            variant="secondary"
+                            className={`${statusColors[order.status] || ""} text-xs`}
+                          >
+                            {order.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>
 
         {/* Top Selling Products */}
         <Card>
-          <CardHeader>
-            <CardTitle>Top Selling Products</CardTitle>
+          <CardHeader className="p-3 sm:p-6">
+            <CardTitle className="text-sm sm:text-base">Top Selling Products</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
             {topProducts.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">
+              <p className="text-muted-foreground text-center py-4 text-sm">
                 No sales data yet
               </p>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Product</TableHead>
-                    <TableHead className="text-right">Sold</TableHead>
-                    <TableHead className="text-right">Revenue</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {topProducts.map((product, index) => (
-                    <TableRow key={product.name}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          <span className="text-muted-foreground text-sm">
-                            #{index + 1}
-                          </span>
-                          {product.name}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {product.sold} units
-                      </TableCell>
-                      <TableCell className="text-right">
-                        ${product.revenue.toFixed(2)}
-                      </TableCell>
+              <div className="overflow-x-auto -mx-3 sm:mx-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-xs sm:text-sm">Product</TableHead>
+                      <TableHead className="text-right text-xs sm:text-sm hidden sm:table-cell">Sold</TableHead>
+                      <TableHead className="text-right text-xs sm:text-sm">Revenue</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {topProducts.map((product, index) => (
+                      <TableRow key={product.name}>
+                        <TableCell className="font-medium p-2 sm:p-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground text-xs sm:text-sm">
+                              #{index + 1}
+                            </span>
+                            <span className="text-xs sm:text-sm truncate max-w-[120px] sm:max-w-none">{product.name}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right p-2 sm:p-4 text-xs sm:text-sm hidden sm:table-cell">
+                          {product.sold} units
+                        </TableCell>
+                        <TableCell className="text-right p-2 sm:p-4 text-xs sm:text-sm">
+                          ${product.revenue.toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>

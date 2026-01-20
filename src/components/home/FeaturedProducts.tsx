@@ -31,18 +31,18 @@ export function FeaturedProducts() {
   }, []);
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+    <section className="py-12 sm:py-16 md:py-24">
+      <div className="container px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-12">
           <div>
-            <p className="text-sm font-medium tracking-widest text-accent uppercase mb-2">
+            <p className="text-xs sm:text-sm font-medium tracking-widest text-accent uppercase mb-2">
               Curated Selection
             </p>
-            <h2 className="font-display text-3xl md:text-4xl font-medium">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium">
               Featured Collection
             </h2>
           </div>
-          <Button variant="ghost" asChild className="group self-start md:self-auto">
+          <Button variant="ghost" asChild className="group self-start sm:self-auto">
             <Link to="/products">
               View All
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
