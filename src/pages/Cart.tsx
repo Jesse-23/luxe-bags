@@ -77,9 +77,9 @@ const Cart = () => {
               return (
                 <div
                   key={item.id}
-                  className="flex gap-4 p-4 bg-card rounded-lg border border-border"
+                  className="flex flex-col sm:flex-row gap-4 p-4 bg-card rounded-lg border border-border"
                 >
-                  <div className="w-24 h-24 flex-shrink-0 rounded-md overflow-hidden bg-secondary">
+                  <div className="w-full sm:w-24 h-32 sm:h-24 flex-shrink-0 rounded-md overflow-hidden bg-secondary">
                     <img
                       src={product.images?.[0] || "/placeholder.svg"}
                       alt={product.name}
@@ -91,13 +91,13 @@ const Cart = () => {
                     <div className="flex justify-between gap-2">
                       <Link
                         to={`/products/${product.slug}`}
-                        className="font-display text-lg font-medium hover:text-accent transition-colors truncate"
+                        className="font-display text-base sm:text-lg font-medium hover:text-accent transition-colors line-clamp-2 sm:truncate"
                       >
                         {product.name}
                       </Link>
                       <button
                         onClick={() => removeFromCart(item.id)}
-                        className="p-1 text-muted-foreground hover:text-destructive transition-colors"
+                        className="p-1 text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                       >
                         <X className="h-5 w-5" />
                       </button>

@@ -117,13 +117,13 @@ const Products = () => {
 
   return (
     <Layout>
-      <div className="container py-8 md:py-12">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="font-display text-4xl md:text-5xl font-medium mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-2">
             {getPageTitle()}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             {searchQuery
               ? `Found ${products.length} result${products.length !== 1 ? "s" : ""}`
               : "Discover our collection of handcrafted luxury bags"}
@@ -132,7 +132,7 @@ const Products = () => {
 
         {/* Active Search Badge */}
         {searchQuery && (
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary rounded-full">
               <Search className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">{searchQuery}</span>
@@ -147,7 +147,7 @@ const Products = () => {
         )}
 
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
+        <div className="flex flex-col gap-4 mb-6 sm:mb-8">
           <div className="flex flex-wrap gap-2">
             <Button
               variant={categorySlug === null && !searchQuery ? "default" : "outline"}
@@ -168,18 +168,20 @@ const Products = () => {
             ))}
           </div>
 
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              {sortOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex justify-end">
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Products Grid */}

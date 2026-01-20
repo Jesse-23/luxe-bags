@@ -95,39 +95,39 @@ const Orders = () => {
 
   return (
     <Layout>
-      <div className="container py-8 md:py-12">
-        <h1 className="font-display text-3xl md:text-4xl font-medium mb-8">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8 md:py-12">
+        <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium mb-6 sm:mb-8">
           My Orders
         </h1>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {orders.map((order) => (
             <div
               key={order.id}
-              className="bg-card rounded-lg border border-border p-6"
+              className="bg-card rounded-lg border border-border p-4 sm:p-6"
             >
-              <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Order ID</p>
-                  <p className="font-mono text-sm">{order.id}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Order ID</p>
+                  <p className="font-mono text-xs sm:text-sm truncate">{order.id.slice(0, 8)}...</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Date</p>
-                  <p className="text-sm">
+                  <p className="text-xs sm:text-sm text-muted-foreground">Date</p>
+                  <p className="text-xs sm:text-sm">
                     {new Date(order.created_at).toLocaleDateString("en-US", {
                       year: "numeric",
-                      month: "long",
+                      month: "short",
                       day: "numeric",
                     })}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total</p>
-                  <p className="font-medium">${order.total_amount.toFixed(2)}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Total</p>
+                  <p className="font-medium text-sm sm:text-base">${order.total_amount.toFixed(2)}</p>
                 </div>
-                <div>
+                <div className="flex items-start">
                   <span
-                    className={`inline-block px-3 py-1 text-xs font-medium rounded-full capitalize ${
+                    className={`inline-block px-2 sm:px-3 py-1 text-xs font-medium rounded-full capitalize ${
                       statusColors[order.status] || "bg-gray-100 text-gray-800"
                     }`}
                   >
@@ -137,17 +137,17 @@ const Orders = () => {
               </div>
 
               <div className="border-t border-border pt-4">
-                <p className="text-sm font-medium mb-2">Items</p>
-                <div className="space-y-2">
+                <p className="text-xs sm:text-sm font-medium mb-2">Items</p>
+                <div className="space-y-1.5 sm:space-y-2">
                   {order.order_items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex justify-between text-sm"
+                      className="flex justify-between text-xs sm:text-sm"
                     >
-                      <span className="text-muted-foreground">
+                      <span className="text-muted-foreground truncate mr-2">
                         {item.product_name} × {item.quantity}
                       </span>
-                      <span>${(item.product_price * item.quantity).toFixed(2)}</span>
+                      <span className="flex-shrink-0">${(item.product_price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
@@ -155,8 +155,8 @@ const Orders = () => {
 
               {order.shipping_address_line1 && (
                 <div className="border-t border-border pt-4 mt-4">
-                  <p className="text-sm font-medium mb-2">Shipping Address</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm font-medium mb-2">Shipping Address</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     {order.shipping_address_line1}
                     {order.shipping_address_line2 && `, ${order.shipping_address_line2}`}
                     <br />

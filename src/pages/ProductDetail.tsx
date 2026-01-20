@@ -85,19 +85,19 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      <div className="container py-8">
+      <div className="container px-4 sm:px-6 py-6 sm:py-8">
         {/* Breadcrumb */}
         <Link
           to="/products"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 sm:mb-8"
         >
           <ChevronLeft className="h-4 w-4 mr-1" />
           Back to Products
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {/* Images */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div className="aspect-square rounded-lg overflow-hidden bg-secondary">
               <img
                 src={images[selectedImage]}
@@ -106,12 +106,12 @@ const ProductDetail = () => {
               />
             </div>
             {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
                 {images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
+                    className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-colors ${
                       selectedImage === index
                         ? "border-accent"
                         : "border-transparent"
@@ -131,31 +131,31 @@ const ProductDetail = () => {
           {/* Product Info */}
           <div>
             {product.category && (
-              <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">
+              <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider mb-2">
                 {(product.category as { name: string }).name}
               </p>
             )}
-            <h1 className="font-display text-3xl md:text-4xl font-medium mb-4">
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium mb-3 sm:mb-4">
               {product.name}
             </h1>
 
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl font-medium">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <span className="text-xl sm:text-2xl font-medium">
                 ${product.price.toFixed(2)}
               </span>
               {hasDiscount && (
-                <span className="text-lg text-muted-foreground line-through">
+                <span className="text-base sm:text-lg text-muted-foreground line-through">
                   ${product.compare_at_price!.toFixed(2)}
                 </span>
               )}
             </div>
 
             {product.description && (
-              <p className="text-muted-foreground mb-8">{product.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8">{product.description}</p>
             )}
 
             {/* Quantity */}
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <p className="text-sm font-medium mb-2">Quantity</p>
               <div className="flex items-center gap-3">
                 <Button
@@ -179,7 +179,7 @@ const ProductDetail = () => {
             </div>
 
             {/* Stock Status */}
-            <p className="text-sm mb-6">
+            <p className="text-sm mb-4 sm:mb-6">
               {product.stock_quantity > 0 ? (
                 <span className="text-green-600">
                   ✓ In Stock ({product.stock_quantity} available)
@@ -201,11 +201,11 @@ const ProductDetail = () => {
             </Button>
 
             {/* Features */}
-            <div className="mt-8 pt-8 border-t border-border">
-              <h3 className="font-display text-lg font-medium mb-4">
+            <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
+              <h3 className="font-display text-base sm:text-lg font-medium mb-3 sm:mb-4">
                 Product Features
               </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                 <li>• Premium genuine leather construction</li>
                 <li>• Hand-stitched details</li>
                 <li>• Gold-tone hardware</li>

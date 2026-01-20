@@ -29,18 +29,18 @@ const categories = [
 
 export function CategoryShowcase() {
   return (
-    <section className="py-16 md:py-24 bg-secondary/30">
-      <div className="container">
-        <div className="text-center mb-12">
-          <p className="text-sm font-medium tracking-widest text-accent uppercase mb-2">
+    <section className="py-12 sm:py-16 md:py-24 bg-secondary/30">
+      <div className="container px-4 sm:px-6">
+        <div className="text-center mb-8 sm:mb-12">
+          <p className="text-xs sm:text-sm font-medium tracking-widest text-accent uppercase mb-2">
             Shop by Style
           </p>
-          <h2 className="font-display text-3xl md:text-4xl font-medium">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-medium">
             Explore Our Categories
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {categories.map((category) => (
             <Link
               key={category.slug}
@@ -53,9 +53,9 @@ export function CategoryShowcase() {
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
-                <p className="text-sm opacity-80 mb-1">{category.description}</p>
-                <h3 className="font-display text-2xl font-medium">{category.name}</h3>
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6 text-primary-foreground">
+                <p className="text-xs sm:text-sm opacity-80 mb-0.5 sm:mb-1 hidden sm:block">{category.description}</p>
+                <h3 className="font-display text-lg sm:text-xl md:text-2xl font-medium">{category.name}</h3>
               </div>
             </Link>
           ))}
