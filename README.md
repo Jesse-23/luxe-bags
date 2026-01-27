@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+# Welcome to Luxe Bags
 
 ## What technologies are used for this project?
 
