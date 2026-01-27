@@ -21,6 +21,7 @@ import About from "./pages/About";
 import Press from "./pages/Press";
 import Careers from "./pages/Careers";
 import Sustainability from "./pages/Sustainability";
+import SizeGuide from "./pages/SizeGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/press" element={<Press />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/sustainability" element={<Sustainability />} />
+              <Route path="/size-guide" element={<SizeGuide />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </CartProvider>
