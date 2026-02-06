@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-// import { supabase } from "@/lib/supabase";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

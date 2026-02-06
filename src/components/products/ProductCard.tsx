@@ -16,13 +16,6 @@ export function ProductCard({ product }: ProductCardProps) {
     ? Math.round(((product.compare_at_price! - product.price) / product.compare_at_price!) * 100)
     : 0;
 
-  // const imageUrl =
-  // product.images && product.images.length > 0
-  //   ? supabase.storage
-  //       .from("product-images")
-  //       .getPublicUrl(product.images[0]).data.publicUrl
-  //   : "/placeholder.svg";
-
   const imageUrl =
     product.images && product.images.length > 0
       ? product.images[0].startsWith('http')
@@ -31,8 +24,6 @@ export function ProductCard({ product }: ProductCardProps) {
             .from("product-images")
             .getPublicUrl(product.images[0]).data.publicUrl
       : "/placeholder.svg";
-    
-
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();

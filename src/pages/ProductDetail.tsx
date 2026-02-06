@@ -80,6 +80,7 @@ const ProductDetail = () => {
     );
   }
 
+<<<<<<< HEAD
   // const images =
   //   product.images && product.images.length > 0
   //     ? product.images.map(
@@ -102,6 +103,10 @@ const ProductDetail = () => {
 
     console.log("Raw images from DB:", product.images);
 
+=======
+  const images = product.images.length > 0 ? product.images : ["/placeholder.svg"];
+  const hasDiscount = product.compare_at_price && product.compare_at_price > product.price;
+>>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
 
   return (
     <Layout>
@@ -171,9 +176,13 @@ const ProductDetail = () => {
             </div>
 
             {product.description && (
+<<<<<<< HEAD
               <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8">
                 {product.description}
               </p>
+=======
+              <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8">{product.description}</p>
+>>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
             )}
 
             {/* Quantity */}
@@ -242,4 +251,8 @@ const ProductDetail = () => {
   );
 };
 
+<<<<<<< HEAD
 export default ProductDetail;
+=======
+export default ProductDetail;
+>>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
