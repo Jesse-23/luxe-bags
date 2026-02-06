@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "luxe-bags",
-=======
-  "name": "vite_react_shadcn_ts",
->>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -78,18 +74,10 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
-<<<<<<< HEAD
-=======
-    "lovable-tagger": "^1.1.13",
->>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-<<<<<<< HEAD
     "vite": "^7.3.1"
-=======
-    "vite": "^5.4.19"
->>>>>>> 931b57c9054f3250816b51925f3f01ccd6b4d1ed
   }
 }
