@@ -80,21 +80,15 @@ const ProductDetail = () => {
     );
   }
 
-  // const images =
-  //   product.images && product.images.length > 0
-  //     ? product.images.map(
-  //         (img) =>
-  //           supabase.storage.from("product-images").getPublicUrl(img).data
-  //             .publicUrl,
-  //       )
-  //     : ["/placeholder.svg"];
-
-  const images = product.images
-  ? JSON.parse(product.images as any).map(
-      (img: string) =>
-        `https://vijawxheqevkpvnrdpre.supabase.co/storage/v1/object/public/product-images/${img}`
-    )
-  : ["/placeholder.svg"];
+  const images =
+    product.images && product.images.length > 0
+      ? product.images.map(
+          (img: string) =>
+            img.startsWith('http')
+              ? img
+              : supabase.storage.from("product-images").getPublicUrl(img).data.publicUrl,
+        )
+      : ["/placeholder.svg"];
 
 
   const hasDiscount =

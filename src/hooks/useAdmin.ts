@@ -19,6 +19,8 @@ export function useAdmin() {
         _user_id: user.id,
         _role: "admin",
       });
+      console.log("user.id:", user.id);
+      console.log("RPC has_role returned:", data, "error:", error);
 
       if (error) {
         console.error("Error checking admin status:", error);
